@@ -25,14 +25,13 @@ in the app container.
 
 1. Create a project directory and save the following as `docker-compose.yml`.
    This pulls the published image — no local build or source checkout
-   required. (Community Edition does not include Marketplace/Fleet/Curator;
-   swap the image for `ghcr.io/nola-ai-inc/atomic-community-edition` if that's
-   your entitlement.)
+  required. The production application image is published at
+  `ghcr.io/nola-ai-inc/atomiciq`.
 
    ```yaml
    services:
      atk-ee:
-       image: ghcr.io/nola-ai-inc/atomic-enterprise-edition:${TAG:-latest}
+      image: ghcr.io/nola-ai-inc/atomiciq:${TAG:-latest}
        environment:
          ATOMIC_ENGINE: atomiciq
          models__hf_token: ${HF_TOKEN:-}
