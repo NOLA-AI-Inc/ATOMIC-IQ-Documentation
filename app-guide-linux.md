@@ -25,13 +25,13 @@ in the app container.
 
 1. Create a project directory and save the following as `docker-compose.yml`.
    This pulls the published image — no local build or source checkout
-  required. The production application image is published at
-  `ghcr.io/nola-ai-inc/atomiciq`.
+   required. The production application image is published at
+   `ghcr.io/nola-ai-inc/atomiciq`.
 
    ```yaml
    services:
      atk-ee:
-      image: ghcr.io/nola-ai-inc/atomiciq:${TAG:-latest}
+       image: ghcr.io/nola-ai-inc/atomiciq:${TAG:-latest}
        environment:
          ATOMIC_ENGINE: atomiciq
          models__hf_token: ${HF_TOKEN:-}
