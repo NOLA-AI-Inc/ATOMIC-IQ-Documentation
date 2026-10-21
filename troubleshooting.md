@@ -31,7 +31,14 @@ tail -n 100 "$HOME/Library/Application Support/ATK/atk.log"
 Open the recorded URL manually. The launcher prefers `8880` but automatically
 selects another free port when necessary.
 
-On Windows (WSL2) and Linux, AtomicIQ runs as a Docker Compose stack and
+On Windows, open **AtomicIQ** from the Start menu and wait for the desktop
+window to finish starting the bundled backend. First-launch model downloads
+can take several minutes. Inspect `%LOCALAPPDATA%\ATK\logs\atk.log`,
+`atk.server.log`, and `atk.err.log` in the same directory for startup errors.
+The default interface URL is `http://127.0.0.1:8880/`. If the launcher reports
+that port `8880` is in use, close the conflicting service and relaunch AtomicIQ.
+
+On Linux, AtomicIQ runs as a Docker Compose stack and
 does not open a browser itself. Check container status and logs for both
 services instead:
 
@@ -60,7 +67,13 @@ ATOMICIQ_URL=$(sed -n 's/^ATOMIC_API_URL=//p' "$HOME/Library/Application Support
 curl -sS --max-time 5 "$ATOMICIQ_URL/v1/health"
 ```
 
-On Windows (WSL2) and Linux, the port is fixed by default:
+On Windows, check the default local endpoint from PowerShell:
+
+```powershell
+curl.exe -sS --max-time 5 http://127.0.0.1:8880/v1/health
+```
+
+On Linux, the port is fixed by default:
 
 ```bash
 curl -sS --max-time 5 http://localhost:8880/v1/health
@@ -68,15 +81,17 @@ curl -sS --max-time 5 http://localhost:8880/v1/health
 
 If it fails:
 
-1. On macOS, confirm the menu-bar app is running; on Windows/Linux, confirm
-   the `atk-ee` container is running with `docker compose ps`.
+1. On macOS, confirm the menu-bar app is running; on Windows, confirm the
+  installed AtomicIQ desktop app is running; on Linux, confirm the `atk-ee`
+  container is running with `docker compose ps`.
 2. On macOS, re-read `launcher_ports.env`; do not assume port `8880`. On
-   Windows/Linux the port is `8880` unless you changed `.env`.
-3. Inspect the end of `atk.log` (macOS) or
-   `docker compose logs --tail 100 atk-ee` (Windows/Linux) for a
-   startup or port error.
-4. Restart from the app (macOS) or with `docker compose restart atk-ee`
-   (Windows/Linux) after preserving any useful error details.
+  Windows the port is `8880` by default; on Linux it is `8880` unless you
+  changed `.env`.
+3. Inspect the end of `atk.log` (macOS), the files under
+  `%LOCALAPPDATA%\ATK\logs\` (Windows), or
+  `docker compose logs --tail 100 atk-ee` (Linux) for a startup or port error.
+4. Quit and relaunch the app (macOS/Windows) or use
+  `docker compose restart atk-ee` (Linux) after preserving useful error details.
 5. Confirm security software or a firewall is not blocking loopback
    connections.
 
@@ -89,9 +104,9 @@ itself returns `200`.
 - On a first run, wait for the GGUF download to finish (see "The app does not
   open a browser" above); this can take several minutes depending on
   connection speed.
-- On macOS, confirm `community/llama_sidecar.py` has started a process
-  listening on `127.0.0.1:8100`.
-- On Windows/Linux, confirm the `llama-server` container is running and
+- On macOS and Windows, confirm the bundled `llama.cpp` sidecar has started
+  a process listening on `127.0.0.1:8100`.
+- On Linux, confirm the `llama-server` container is running and
   `docker compose logs -f llama-server` shows it serving, not restarting.
 - Confirm `llm__llamacpp_gguf_repo` / `llm__llamacpp_gguf_filename` (or the
   Docker `LLAMACPP_GGUF_REPO` / `LLAMACPP_GGUF_FILENAME` variables) match
@@ -99,7 +114,8 @@ itself returns `200`.
   which file should exist on disk.
 - If `models__allow_hf_model_download=0`, confirm the GGUF and embedding
   model were copied into `~/Library/Application Support/ATK/models/`
-  (or `./data/models/` for Docker) manually.
+  (macOS), `%LOCALAPPDATA%\ATK\models\` (Windows), or `./data/models/`
+  (Linux Docker) manually.
 
 ## The interface loads but login fails
 
@@ -227,7 +243,23 @@ The app may rotate logs. Capture the relevant time window soon after a failure.
 Treat configuration and logs as sensitive because they can reveal local paths,
 user details, provider names, or source identifiers.
 
-## Find logs and configuration on Windows (WSL2) and Linux
+## Find logs and configuration on Windows
+
+Paste `%LOCALAPPDATA%\ATK\` into File Explorer's address bar. Important paths:
+
+```text
+%LOCALAPPDATA%\ATK\config.env
+%LOCALAPPDATA%\ATK\models\
+%LOCALAPPDATA%\ATK\iq-stores\default\
+%LOCALAPPDATA%\ATK\logs\atk.log
+%LOCALAPPDATA%\ATK\logs\atk.server.log
+%LOCALAPPDATA%\ATK\logs\atk.err.log
+```
+
+Capture the relevant log window soon after a failure and redact sensitive
+configuration, local paths, and user details before sharing it.
+
+## Find logs and configuration on Linux
 
 Runtime state lives in the bind-mounted `data/` directory next to your
 `docker-compose.yml`. There is no `launcher_ports.env` or `atk.log` file to
@@ -246,7 +278,7 @@ Treat this log output as sensitive for the same reasons as the macOS files.
 Include:
 
 ```text
-Platform (macOS / Windows WSL2 / Linux) and architecture:
+Platform (macOS / Windows / Linux) and architecture:
 effective AtomicIQ URL (no credentials):
 inference_server.online (from /v1/health):
 screen or HTTP method/path:

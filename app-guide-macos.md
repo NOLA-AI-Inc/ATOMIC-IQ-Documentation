@@ -6,8 +6,7 @@ Account, Settings), see [Using AtomicIQ](app-guide.md).
 
 ## Start and reopen the interface
 
-Launch **AtomicIQ** (Community Edition builds show as **AtomicIQ Community
-Edition**) from Applications and leave its menu-bar item running. A Tauri
+Launch **AtomicIQ** from Applications and leave its menu-bar item running. A Tauri
 window (`atomic-desktop`) stays hidden until the local service reports
 healthy, then opens the interface automatically. The menu bar's Start/Stop
 actions run `launch-atk.sh` / `stop-atk.sh` from the app bundle.

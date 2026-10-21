@@ -52,7 +52,10 @@ On macOS, a local companion can read the effective URL from:
 ~/Library/Application Support/ATK/launcher_ports.env
 ```
 
-On Windows (via WSL2) and Linux, AtomicIQ runs as a Docker Compose stack and
+On Windows, launch the installed **AtomicIQ** desktop app to start its bundled
+backend. The local API uses `http://127.0.0.1:8880` by default.
+
+On Linux, AtomicIQ runs as a Docker Compose stack and
 publishes the API on `http://localhost:8880` by default — treat that as fixed
 configuration rather than something to discover.
 

@@ -4,47 +4,59 @@ Platform-specific startup and local file details for Windows. For the shared
 application walkthrough (Chat, Library, Validator, Marketplace, Curator,
 Account, Settings), see [Using AtomicIQ](app-guide.md).
 
-AtomicIQ on Windows has two installation paths today: the supported Docker
-Compose stack (via WSL2), and an early native desktop app. Use Docker Compose
-unless you are specifically testing the native build.
+## Install
 
-## Docker Compose (supported)
+1. Visit [atomizer.ai/get-started](https://atomizer.ai/get-started), select
+   Windows, and download the Windows installer package
+   (`AtomicIQ_<version>_x64-setup.exe`). Use the package supplied by your
+   organization if you have been given a specific build.
+2. Run the `.exe` and follow the setup prompts. AtomicIQ installs for your
+   Windows user account and includes the local backend and `llama.cpp`
+   runtime. No separate Python installation is required.
+3. If setup requests administrator approval to install the bundled Microsoft
+   Visual C++ x64 Redistributable, approve that prerequisite installation.
+   AtomicIQ itself remains a per-user installation. Restart Windows before
+   launching AtomicIQ if setup reports that a restart is required.
+4. Open **AtomicIQ** from the Start menu.
 
-Install WSL2 and Docker Desktop, then run the same two-container stack as
-Linux — see [Using AtomicIQ on Linux](app-guide-linux.md#install) for the
-full `docker-compose.yml`, `.env`, and startup walkthrough; the steps and
-files are identical on Windows once Docker Desktop's WSL2 integration is
-enabled. See [Quickstart](quickstart.md#1-install-atomiciq) for the
-WSL2/Docker Desktop setup steps.
+Use 64-bit Windows and allow free disk space for the embedded corpus store,
+source documents, and downloaded models (a few GB). Internet access is needed
+for WebView2 setup if it is missing and for first-launch model downloads.
 
-## Native desktop app (preview)
+## Start and reopen the interface
 
-AtomicIQ's desktop shell (`atomic-desktop`, built with Tauri) is
-cross-platform and includes a Windows installer target (NSIS), the same
-codebase that ships the macOS menu-bar app. As of this writing, the Windows
-packaging is not yet at parity with macOS:
+Launch **AtomicIQ** from the Start menu. The desktop app starts the bundled
+local service automatically and opens the interface when the service is
+healthy. The first startup can take several minutes while AtomicIQ
+initializes its corpus store and downloads its model.
 
-- There is no Windows equivalent of the macOS app bundle's `launch-atk.sh` /
-  `stop-atk.sh` scripts, so the Windows build does not start the backend
-  service or the `llama.cpp` sidecar for you. The window/tray shell attaches
-  to a server that is already listening at `ATOMIC_DESKTOP_URL` (default
-  `http://127.0.0.1:8880`) rather than launching one itself.
-- There is no published Windows installer build yet — building one requires
-  compiling `atomic-desktop` from source.
-- Local AtomicIQ data on Windows falls back to a generic path,
-  `%USERPROFILE%\ATK\`, rather than a Windows-conventional
-  `%APPDATA%`/`%LOCALAPPDATA%` location — this is expected to change before
-  the native build reaches parity with macOS.
+Keep AtomicIQ running while you use the interface. The local service is
+available at `http://127.0.0.1:8880/` by default and listens only on the local
+machine. If startup reports that port `8880` is already in use, close the
+conflicting service and relaunch AtomicIQ. Quitting AtomicIQ stops its bundled
+backend.
 
-Until this packaging work lands, treat the native Windows app as a
-preview/developer build: start the backend yourself (for example, by running
-the Docker Compose stack above and pointing `ATOMIC_DESKTOP_URL` at it, or by
-running the Python service directly), then launch the Tauri shell to attach
-to it. Check back here for updates as Windows packaging matures.
+For the next steps, see [Quickstart](quickstart.md#3-create-or-sign-in-to-your-account).
 
 ## Local files
 
-The paths below apply when running the Docker Compose stack (the supported
-path). See [Using AtomicIQ on Linux](app-guide-linux.md#local-files) — the
-bind-mounted `data/` directory, container logs, and port behavior are
-identical on Windows under WSL2.
+AtomicIQ stores user-specific runtime state under:
+
+```text
+%LOCALAPPDATA%\ATK\
+```
+
+Paste that path into File Explorer's address bar to open it.
+
+| File or directory | Purpose |
+|---|---|
+| `config.env` | Persistent local configuration, created on first launch |
+| `models\` | Downloaded models |
+| `iq-stores\default\` | Default embedded corpus store |
+| `logs\atk.log` | Launcher log |
+| `logs\atk.server.log` | Backend output |
+| `logs\atk.err.log` | Backend error output |
+
+These files are operational state, not an integration interface. External
+applications should call the [HTTP API](api-reference.md) instead of reading
+or modifying the embedded store.

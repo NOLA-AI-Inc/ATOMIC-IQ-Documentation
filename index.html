@@ -27,6 +27,20 @@
       .markdown-section table {
         display: table;
         width: 100%;
+        color: #e6e6e6;
+      }
+
+      .markdown-section table tr {
+        background-color: #343434;
+      }
+
+      .markdown-section table tr:nth-child(2n) {
+        background-color: #454545;
+      }
+
+      .markdown-section table th,
+      .markdown-section table td {
+        border-color: #737373;
       }
 
       @media (max-width: 720px) {
@@ -43,7 +57,7 @@
     <script>
       window.$docsify = {
         name: 'AtomicIQ',
-        repo: 'https://github.com/NOLA-AI-Inc/ATOMIC-ToolKit-Community-Edition-Documentation',
+        repo: 'https://github.com/NOLA-AI-Inc/ATOMIC-IQ-Documentation',
         homepage: 'README.md',
         loadSidebar: true,
         loadNavbar: true,
