@@ -16,27 +16,17 @@ supplied by your organization and run the installer. Confirm **AtomicIQ.app**
 Applications. Allow a few GB of free disk space for the downloaded `llama.cpp`
 model plus space for source documents.
 
-### Windows (via WSL2)
+### Windows
 
-1. Open PowerShell **as Administrator** and install WSL2 with Ubuntu:
+Download the Windows installer package (`AtomicIQ_<version>_x64-setup.exe`)
+and run it on 64-bit Windows. Follow the setup prompts, approve installation
+of the bundled Microsoft Visual C++ runtime if requested, and restart Windows
+if prompted. The package includes the backend and `llama.cpp` runtime; no
+separate Python installation is required.
 
-   ```powershell
-   wsl --install
-   ```
-
-   Restart your computer when prompted.
-2. Launch **Ubuntu** from the Start Menu and create a UNIX username/password.
-3. Install [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/),
-   then in Settings enable:
-   - General → "Use the WSL 2 based engine"
-   - Resources → WSL Integration → enable your Ubuntu distro
-4. Run every command below from the **Ubuntu** terminal, not PowerShell or
-   Command Prompt.
-
-An NVIDIA GPU is recommended for the `llama.cpp` sidecar that serves chat and
-task inference; AMD GPUs are not supported. CPU-only inference works for
-evaluation (drop the GPU reservation and switch to a non-CUDA `llama.cpp`
-image) but is not recommended for production workloads.
+Allow a few GB of free disk space for downloaded models plus space for source
+documents. See [Using AtomicIQ on Windows](app-guide-windows.md#install)
+for the full installation steps.
 
 ### Linux
 
@@ -45,11 +35,10 @@ for the `llama.cpp` sidecar; AMD GPUs are not supported. Install the NVIDIA
 Container Toolkit (`nvidia-smi` should work inside containers) if you want GPU
 acceleration.
 
-### Windows and Linux: run the Docker Compose stack
+### Linux: run the Docker Compose stack
 
 See [Using AtomicIQ on Linux](app-guide-linux.md#install) for the full
-`docker-compose.yml`, `.env`, and first-boot steps — the same containers and
-files apply on Windows under WSL2. Self-hosting requires accepting the
+`docker-compose.yml`, `.env`, and first-boot steps. Self-hosting requires accepting the
 license agreement shown at
 [atomizer.ai/get-started](https://atomizer.ai/get-started).
 
@@ -59,13 +48,16 @@ On macOS, open **AtomicIQ** from Applications. It runs as a menu-bar
 application, starts the local service, and opens the interface in your default
 browser.
 
-On Windows and Linux, once `atk-ee` reports healthy in the compose logs, open
+On Windows, open **AtomicIQ** from the Start menu. The desktop app starts the
+bundled local service and opens the interface automatically once it is healthy.
+
+On Linux, once `atk-ee` reports healthy in the compose logs, open
 the interface directly in your browser.
 
 The first startup can take several minutes while AtomicIQ initializes its embedded
 corpus store and the `llama.cpp` sidecar downloads its model. Keep the
-menu-bar app (macOS) or the Docker stack (Windows/Linux) running while you use
-the interface.
+menu-bar app (macOS), desktop app (Windows), or Docker stack (Linux) running
+while you use the interface.
 
 The preferred URL is:
 
@@ -80,7 +72,10 @@ effective URL with:
 grep '^ATOMIC_API_URL=' "$HOME/Library/Application Support/ATK/launcher_ports.env"
 ```
 
-On Windows and Linux, the Docker Compose stack publishes the API on
+On Windows, the local service uses `http://127.0.0.1:8880` by default. Close
+any conflicting service if AtomicIQ reports that the port is already in use.
+
+On Linux, the Docker Compose stack publishes the API on
 `http://localhost:8880` by default (override with `ATK_PORT` in `.env`) — there
 is no `launcher_ports.env` to read.
 

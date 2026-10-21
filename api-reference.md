@@ -22,14 +22,18 @@ ATOMICIQ_URL=$(sed -n 's/^ATOMIC_API_URL=//p' "$HOME/Library/Application Support
 curl -sS "$ATOMICIQ_URL/v1/health"
 ```
 
-On Windows (via WSL2) and Linux, AtomicIQ runs as a Docker Compose stack that
+On Windows, the installed desktop app starts the bundled backend at
+`http://127.0.0.1:8880` by default. See
+[Using AtomicIQ on Windows](app-guide-windows.md) for startup and logs.
+
+On Linux, AtomicIQ runs as a Docker Compose stack that
 publishes the API on `http://localhost:8880` by default (`ATK_PORT` in `.env`)
 — there is no `launcher_ports.env` to read.
 
 Treat `/v1/health` as reachability only. Most `/v1/*` routes require an
 authenticated user. The response also carries `inference_server.online`,
 which reflects whether the attached `llama.cpp` server is reachable. The
-macOS default is `http://127.0.0.1:8100`; the Docker Compose setup uses
+macOS and Windows default is `http://127.0.0.1:8100`; the Docker Compose setup uses
 `http://llama-server:8080`. This is a separate signal from the HTTP
 service being up.
 

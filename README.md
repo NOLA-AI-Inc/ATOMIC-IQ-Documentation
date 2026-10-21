@@ -5,8 +5,9 @@ inference, and validation. **AtomicIQ** is the engine that packages the local
 service and browser interface for local self-hosting, built from
 [AtomicAppBuilder](https://github.com/NOLA-AI-Inc/AtomicAppBuilder)
 (`ATOMIC_ENGINE=atomiciq`). On macOS it runs as a native menu-bar application
-(**AtomicIQ.app**); on Windows (via WSL2) and Linux it runs as a Docker Compose
-stack with a `llama.cpp` sidecar.
+(**AtomicIQ.app**); on Windows it ships as a native desktop app installed
+from an `.exe` package with a bundled backend and `llama.cpp` runtime. On
+Linux it runs as a Docker Compose stack with a `llama.cpp` sidecar.
 
 > Last verified: 2026-10-07 against AtomicIQ built from AtomicAppBuilder
 > `main`. An edition may hide features that are not licensed or permitted for
@@ -29,10 +30,10 @@ stack with a `llama.cpp` sidecar.
 | Platform | Requirement |
 |---|---|
 | macOS | Apple Silicon (M-series), macOS 12+, at least 8 GB of unified memory. Inference runs against an external `llama.cpp` server attached over loopback (Metal-accelerated), not an in-process PyTorch/MLX model. |
-| Windows (via WSL2) | Docker Desktop with WSL2. An NVIDIA GPU is recommended for the `llama.cpp` sidecar; AMD GPUs are not supported. |
+| Windows | 64-bit Windows; install the `AtomicIQ_<version>_x64-setup.exe` package. Setup includes the Microsoft Visual C++ runtime prerequisite. Internet access is needed for WebView2 setup if missing and first-launch model downloads. |
 | Linux | Docker + Docker Compose plugin. An NVIDIA GPU is recommended for the `llama.cpp` sidecar; AMD GPUs are not supported. |
 
-CPU-only inference works for evaluation on Windows and Linux (drop the GPU
+CPU-only inference works for evaluation in the Linux Docker stack (drop the GPU
 reservation and use a non-CUDA `llama.cpp` image) but is not recommended for
 production workloads. All platforms need free disk space for the embedded
 corpus store plus the downloaded GGUF model (a few GB). See
@@ -77,7 +78,13 @@ recorded in:
 ~/Library/Application Support/ATK/launcher_ports.env
 ```
 
-On Windows (via WSL2) and Linux, AtomicIQ runs as a Docker Compose stack
+On Windows, install the `.exe` package and launch **AtomicIQ** from the Start
+menu. The desktop app starts the bundled backend and opens the interface
+automatically. The local API is available at `http://127.0.0.1:8880` by
+default. See [Using AtomicIQ on Windows](app-guide-windows.md) for setup and
+local log paths.
+
+On Linux, AtomicIQ runs as a Docker Compose stack
 (`atk-ee` plus a `llama-server` sidecar) and publishes the API on
 `http://localhost:8880` by default — there is no `launcher_ports.env` to read.
 Use `docker compose logs -f atk-ee` to watch startup.
