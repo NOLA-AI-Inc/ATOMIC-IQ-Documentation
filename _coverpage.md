@@ -10,6 +10,6 @@
 [Get started](/quickstart.md)
 [Use the app](/app-guide.md)
 [Integrate the API](/developer-workflow.md)
-[GitHub](https://github.com/NOLA-AI-Inc/ATOMIC-ToolKit-Community-Edition-Documentation)
+[GitHub](https://github.com/NOLA-AI-Inc/ATOMIC-IQ-Documentation)
 
 ![color](#0f172a)

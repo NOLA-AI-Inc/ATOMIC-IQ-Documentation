@@ -117,4 +117,4 @@ relevant log excerpt. Remove API keys, cookies, credentials, and private
 source text.
 
 For documentation issues, open an issue in the
-[documentation repository](https://github.com/NOLA-AI-Inc/ATOMIC-ToolKit-Community-Edition-Documentation).
+[documentation repository](https://github.com/NOLA-AI-Inc/ATOMIC-IQ-Documentation).

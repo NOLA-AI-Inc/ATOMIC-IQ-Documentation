@@ -12,8 +12,7 @@ platform.
 
 Requires macOS 12 or newer on Apple Silicon (M-series). Download the `.pkg`
 supplied by your organization and run the installer. Confirm **AtomicIQ.app**
-(Community Edition builds show as **AtomicIQ Community Edition.app**) is in
-Applications. Allow a few GB of free disk space for the downloaded `llama.cpp`
+is in Applications. Allow a few GB of free disk space for the downloaded `llama.cpp`
 model plus space for source documents.
 
 ### Windows

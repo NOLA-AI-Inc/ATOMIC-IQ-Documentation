@@ -4,8 +4,7 @@ AtomicIQ combines the local service and its browser interface. On macOS, a
 menu-bar process owns startup and shutdown; on Windows, the installed desktop
 app manages the bundled backend; on Linux, a Docker Compose stack manages
 the services. The web interface provides the working applications on all
-platforms. Visible applications depend on edition and user
-permissions — Community Edition excludes Curator, Marketplace, and Fleet.
+platforms. Visible applications depend on your license and user permissions.
 
 ## Start and reopen the interface
 
