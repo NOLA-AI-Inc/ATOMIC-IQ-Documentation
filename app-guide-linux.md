@@ -129,6 +129,34 @@ in the app container.
 5. Once `atk-ee` reports healthy, open `http://localhost:8880` (or your
    `ATK_BIND_HOST`/`ATK_PORT` override) in your browser.
 
+## License and third-party notices
+
+The application image includes the ATOMICIQ single-machine,
+non-distribution license agreement and generated third-party notices at
+`/app/LICENSE`. This file is included directly in the image layers; it does
+not depend on a data volume or a startup download. `/app/LICENSE.md` contains
+the same text. Use the agreement bundled with your image tag when reviewing
+the terms for that release.
+
+To read it from a running stack:
+
+```bash
+docker compose exec -T atk-ee cat /app/LICENSE
+```
+
+To read it without starting the application, override the image entrypoint:
+
+```bash
+docker run --rm --entrypoint cat ghcr.io/nola-ai-inc/atomiciq:latest /app/LICENSE
+```
+
+Replace `latest` with your installed release tag to inspect that exact release.
+The machine-readable dependency inventory is included at
+`/app/third-party-licenses.json` in release builds. Any missing license evidence
+is marked for review; generated notices do not replace the individual
+third-party license terms. The separate `llama-server` image and downloaded
+models are subject to their own licenses.
+
 ## Start and reopen the interface
 
 The compose stack runs two containers: `atk-ee` (the app) and `llama-server`
